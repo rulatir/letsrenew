@@ -1,6 +1,6 @@
 import { Chore, Config } from '../models/types';
 import { readCertificateFiles } from './storage';
-import { execFileSync, spawnSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import fs from 'fs';
 
 function sendMail(addresses: string[], subject: string, body: string) {
@@ -52,4 +52,3 @@ export async function checkChoreAndAct(baseCertDir: string, cfg: Config, chore: 
   // For now we return a marker
   return { status: 'request_new_certificate', message: 'no existing cert; should request new certificate via ACME' };
 }
-

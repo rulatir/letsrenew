@@ -20,6 +20,7 @@ export interface Chore {
   notifyOnFailure?: string[];
   preferredAcmeAccount?: string;
   challengeType?: string;
+  importFrom?: string; // optional source to import existing certs from (local path or host:/path)
 }
 
 export interface Config {
@@ -43,4 +44,3 @@ export interface Config {
   };
   chores: Chore[];
 }
-

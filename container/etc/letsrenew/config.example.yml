@@ -7,12 +7,12 @@ expiryThresholdDays: 10
 statusPort: 8080
 statusDigestUser: "status"
 statusDigestPasswordHash: "md5hex-of-user:realm:password" # replace with real HA1
-certStorageDir: "/data/certs"
+certStorageDir: "/data/letsrenew"
 acme:
   directoryUrl: "https://acme-v02.api.letsencrypt.org/directory"
   clientMode: "library"
 ssh:
-  knownHostsPath: "/root/.ssh/known_hosts"
+  knownHostsPath: "/home/letsrenew/.ssh/known_hosts"
 logging:
   level: "info"
   json: false
@@ -35,5 +35,4 @@ chores:
       params:
         sshHostAlias: "web.example.com"
     docroot: "/var/www/html"
-    enabled: false  # example entry, disabled
-
+    enabled: false

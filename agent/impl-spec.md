@@ -204,3 +204,10 @@ Definitions reference
 Appendix: Handler Registry (conceptual)
 - Registry entry shape: { id: string, validateSchema?: JSONSchema, factory: (params)=>Handler }
 - Built-in entries: `ssh-alias` with a schema for `sshHostAlias` and docroot; `local-http-file` for local filesystem deployment.
+
+Appendix: Host deployment and container mount guidance (internal notes)
+
+- Deploy-with-git strategy: the project supports a straightforward deploy-with-git flow where an operator clones the repository onto a host (for example `/opt/letsrenew`) and populates runtime configuration and secret files under `/opt/letsrenew/container`. The container runtime mounts `/opt/letsrenew/container` (or specific subpaths) into the running image, so runtime config and state are managed by the operator on the host.
+
+- Container directory caution: exercise care when creating files under `container/` — anything placed in these subdirectories will likely be mounted into the runtime container. Only create files under `container/` that are intended to be present inside the container at runtime (e.g., `etc/letsrenew/config.yml`, runtime PEMs, SSH config). For committing empty directories use tiny sentinel files (for example `.dir`) rather than README files; README/docs belong in `agent/` or project root, not inside `container/` which is the host->container boundary.
+

@@ -16,8 +16,8 @@ services:
     volumes:
       - "./data/letsrenew:/data/letsrenew:rw"                      # default host path for cert storage (repo-local)
       - "./container/etc/letsrenew:/etc/letsrenew:ro"     # default config dir to mount (repo-local)
-      - "./host-ssh-config:/root/.ssh:ro"                 # default host SSH config dir (repo-local)
-      - "./container/home/user:/home/letsrenew:ro"        # mount example home into container and set $HOME
+      - "./host-ssh-config:/home/letsrenew/.ssh:ro"         # default host SSH config dir (repo-local) mounted into container HOME
+      - "./container/home/letsrenew:/home/letsrenew:ro"   # mount example home into container and set $HOME
     command: ["bun", "src/cli.ts"]
 
 # To override defaults, set LOCAL_UID/LOCAL_GID or edit the volume lines above.
