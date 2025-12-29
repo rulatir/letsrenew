@@ -8,12 +8,20 @@ services:
     image: letsrenew:local
     restart: unless-stopped
     ports:
-      - "${LETSRENEW_STATUS_PORT:-8080}:8080"
+      - "8080:8080" # status server port (change if needed)
     environment:
       - LETSRENEW_CONFIG=/etc/letsrenew/config.yml
+      - HOME=/home/letsrenew
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     volumes:
-      - "${HOST_CERT_DIR:-/var/lib/letsrenew/certs}:/data/certs:rw"
-      - "${HOST_LETSRENEW_CONFIG:-/etc/letsrenew}:/etc/letsrenew:ro"
-      - "${HOST_SSH_CONFIG:-/opt/letsrenew/host-ssh-config}:/root/.ssh:ro"
+      - "./data/letsrenew:/data/letsrenew:rw"                      # default host path for cert storage (repo-local)
+      - "./container/etc/letsrenew:/etc/letsrenew:ro"     # default config dir to mount (repo-local)
+      - "./host-ssh-config:/root/.ssh:ro"                 # default host SSH config dir (repo-local)
+      - "./container/home/user:/home/letsrenew:ro"        # mount example home into container and set $HOME
     command: ["bun", "src/cli.ts"]
 
+# To override defaults, set LOCAL_UID/LOCAL_GID or edit the volume lines above.
+
+networks:
+  default:
+    driver: bridge
