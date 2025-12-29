@@ -1,0 +1,39 @@
+# Example runtime configuration for LetsRenew (mounted into the container at /etc/letsrenew/config.yml)
+# This is an opinionated default used by the daemon when LETSRENEW_CONFIG is not set.
+
+version: 1
+intervalMinutes: 720
+expiryThresholdDays: 10
+statusPort: 8080
+statusDigestUser: "status"
+statusDigestPasswordHash: "md5hex-of-user:realm:password" # replace with real HA1
+certStorageDir: "/data/certs"
+acme:
+  directoryUrl: "https://acme-v02.api.letsencrypt.org/directory"
+  clientMode: "library"
+ssh:
+  knownHostsPath: "/root/.ssh/known_hosts"
+logging:
+  level: "info"
+  json: false
+
+chores:
+  - id: "site-example"
+    name: "example.com cert"
+    description: "Main certificate for example.com"
+    challengeType: "http-01"
+    domains:
+      - name: "example.com"
+      - name: "www.example.com"
+        deployment:
+          type: "ssh-alias"
+          params:
+            sshHostAlias: "web.example.com"
+            docroot: "/var/www/other-site"
+    deployment:
+      type: "ssh-alias"
+      params:
+        sshHostAlias: "web.example.com"
+    docroot: "/var/www/html"
+    enabled: false  # example entry, disabled
+

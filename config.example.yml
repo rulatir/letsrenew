@@ -1,0 +1,30 @@
+version: 1
+intervalMinutes: 720
+expiryThresholdDays: 10
+statusPort: 8080
+statusDigestUser: "status"
+statusDigestPasswordHash: "md5hex-of-user:realm:password"
+certStorageDir: "/data/certs"
+acme:
+  directoryUrl: "https://acme-v02.api.letsencrypt.org/directory"
+  clientMode: "library"
+chores:
+  - id: "site-example"
+    name: "example.com cert"
+    description: "Main certificate for example.com"
+    challengeType: "http-01"
+    domains:
+      - name: "example.com"
+      - name: "www.example.com"
+        deployment:
+          type: "ssh-alias"
+          params:
+            sshHostAlias: "web.example.com"
+            docroot: "/var/www/other-site"
+    deployment:
+      type: "ssh-alias"
+      params:
+        sshHostAlias: "web.example.com"
+    docroot: "/var/www/html"
+    enabled: true
+
